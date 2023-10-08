@@ -8,7 +8,3 @@ if __name__ == "__main__":
     simulador.simular_replica()
 
 print("fin programa")
-
-
-
-
