@@ -9,10 +9,9 @@ class Simulador:
     def __init__(self):
         self.dict_duracion_replica = {}
         self.simulacion = Simulacion()
-        self.dict_espera = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 
-                            11: 0, 12: 0, 13: 0, 14: 0, 15: 0}
-        self.dict_ocupacion = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 
-                            11: 0, 12: 0, 13: 0, 14: 0, 15: 0}
+        
+        self.dict_espera = {i: 0 for i in range(p.CANTIDAD_CAJAS_NORMALES + p.CANTIDAD_CAJAS_RAPIDAS)}
+        self.dict_ocupacion = {i: 0 for i in range(p.CANTIDAD_CAJAS_NORMALES + p.CANTIDAD_CAJAS_RAPIDAS)}
 
     def simular_replica(self):
 
@@ -20,6 +19,9 @@ class Simulador:
         crear_archivo()
 
         for replica in range(p.REPLICAS):
+
+            print(f"replica: {replica} --------------- ")
+
             self.simulacion = Simulacion()
             tiempo_inicio = time.time()
 
@@ -30,6 +32,8 @@ class Simulador:
             tiempo_fin = time.time()
             duracion_replica = tiempo_fin - tiempo_inicio
             self.dict_duracion_replica[replica] = duracion_replica
+
+            print("\n")
 
         tiempo_fin_simulacion_replica = time.time()
         duracion_total = tiempo_fin_simulacion_replica - tiempo_inicio_simulacion_replica
@@ -42,12 +46,14 @@ class Simulador:
         guardar_resultados("datos\diccionario_tiempo_de_ejecucion.json", self.dict_duracion_replica)
 
     def sumar_tiempos_espera_cola(self):
-        for llave in self.simulacion.dict_promedio_tiempo_espera_cola.keys():
-            self.dict_espera[llave] += self.simulacion.dict_promedio_tiempo_espera_cola[llave]
+        for tipo_caja in self.simulacion.dict_promedio_tiempo_espera_cola.keys():
+            for llave in self.simulacion.dict_promedio_ocupacion[tipo_caja].keys():
+                self.dict_espera[llave] += self.simulacion.dict_promedio_tiempo_espera_cola[tipo_caja][llave]
 
     def sumar_porcentaje_ocupacion(self):
-        for llave in self.simulacion.dict_promedio_ocupacion.keys():
-            self.dict_ocupacion[llave] += self.simulacion.dict_promedio_ocupacion[llave]
+        for tipo_caja in self.simulacion.dict_promedio_ocupacion.keys():
+            for llave in self.simulacion.dict_promedio_ocupacion[tipo_caja].keys():
+                self.dict_ocupacion[llave] += self.simulacion.dict_promedio_ocupacion[tipo_caja][llave]
 
     def calcular_espera_promedio(self):
         dict_ = {}
