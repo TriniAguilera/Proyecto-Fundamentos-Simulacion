@@ -20,7 +20,7 @@ class Simulador:
 
         for replica in range(p.REPLICAS):
 
-            print(f"replica: {replica} --------------- ")
+            print(f"replica: {replica} --------------- \n ")
 
             self.simulacion = Simulacion()
             tiempo_inicio = time.time()
@@ -40,8 +40,8 @@ class Simulador:
         self.dict_duracion_replica["promedio"] = duracion_total / p.REPLICAS
         self.dict_duracion_replica["total"] = duracion_total
 
-        print(f"PROMEDIO ESPERA COLA: {self.calcular_espera_promedio()}")
-        print(f"PROMEDIO OCUPACION: {self.calcular_ocupacion_promedio()}")
+        print(f"PROMEDIO ESPERA COLA: {self.calcular_espera_promedio()} \n")
+        print(f"PROMEDIO OCUPACION: {self.calcular_ocupacion_promedio()} \n")
         
         guardar_resultados("datos\diccionario_tiempo_de_ejecucion.json", self.dict_duracion_replica)
 

@@ -34,8 +34,7 @@ class Datos:
                 for posicion in range(len(lista_datos_1)):
                     hora_inicio = lista_datos_1[posicion]
                     tasa = lista_datos_3[posicion]
-                    self.diccionario_hojas_llegadas[hora_inicio] = tasa
-                # self.crear_json("jumbo/parametros_llegada.json")
+                    self.diccionario_hojas_llegadas[hora_inicio] = 1 / tasa
 
         except Exception as e:
             print(f"Error al procesar el archivo Excel: {e}")
@@ -47,7 +46,7 @@ class Datos:
             parametros = scipy.stats.expon.fit(datos, method= "mle")
             escala = parametros[1]
             tasa = 1 / escala
-            self.diccionario_hojas[nombre_hoja] = tasa
+            self.diccionario_hojas[nombre_hoja] = 1 / tasa
 
         elif nombre_hoja == "LLEGADA_SUPERMERCADO":
             pass
