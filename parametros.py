@@ -15,7 +15,7 @@ def abrir_json(nombre_archivo):
         return None
 
 DICCIONARIO_DATOS = abrir_json("jumbo/parametros.json")
-
+DICCIONARIO_DATOS_LLEGADAS = abrir_json("jumbo/parametros_llegada.json")
 
 TASA_COMPRA = DICCIONARIO_DATOS["TIEMPO_COMPRANDO"]
 TASA_ATENCION = DICCIONARIO_DATOS["TIEMPO_CAJA_NORMAL"]
@@ -32,8 +32,7 @@ MINUTOS_POR_HORA = 60
 
 # tocar ------------
 
-JORNADA = 10
-TASA_LLEGADAS = 1/3 
+JORNADA = 13
 REPLICAS = 10
 INFINITO = 1000000000
 
