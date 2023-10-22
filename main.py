@@ -1,4 +1,3 @@
-import parametros as p
 from simulador import Simulador
 
 print("inicio programa")

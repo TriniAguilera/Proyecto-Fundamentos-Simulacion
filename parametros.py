@@ -29,23 +29,31 @@ PROBABILIDAD_ELEGIR_CAJA_NORMAL = 1 - PROBABILIDAD_ELEGIR_CAJA_RAPIDA
 
 MINUTOS_POR_HORA = 60
 
-
 # ---------------
 
 # tocar ------------
 
 JORNADA = 13
-REPLICAS = 10
+REPLICAS = 30
 INFINITO = 9999999999999999999
 
-LISTA_PATH = ["datos\diccionario_datos_tiempo_promedio_espera_cola.json",
-              "datos\diccionario_datos_porcentaje_ocupacion_cajas.json",
-              "datos\diccionario_tiempo_de_ejecucion.json",
+LISTA_PATH = ["datos\espera_replicas.json",
+              "datos\ocupacion_replicas.json",
+              "datos\dict_tiempo_de_ejecucion.json",
               "datos\dict_tiempo_promedio_espera_cola.json",
-              "datos\dict_porcentaje_ocupacion_cajas.json"]
+              "datos\dict_porcentaje_ocupacion_cajas.json",
+              "datos\sd_espera.json",
+              "datos\sd_ocupacion.json",
+              "datos\int_90_espera.json",
+              "datos\int_90_ocupacion.json",
+              "datos\int_95_espera.json",
+              "datos\int_95_ocupacion.json",
+              "datos\error_90_espera.json",
+              "datos\error_95_espera.json",
+              "datos\error_90_ocupacion.json",
+              "datos\error_95_ocupacion.json"]
 
 # ------------------
-
 
 # parametros que desapareceran en la entrega final
 

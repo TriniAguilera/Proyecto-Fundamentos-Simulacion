@@ -2,6 +2,7 @@ import parametros as ps
 import json
 
 def crear_archivo():
+    # print("creamos archivo")
     for path in ps.LISTA_PATH:
         with open(path, "w") as archivo:
             datos_vacios = {}
@@ -13,7 +14,7 @@ def cargar_datos(path):
     return diccionario
         
 def guardar_resultados(path, texto):
-    #print("SIMULADOR guardando resultados")
+    # print("SIMULADOR guardando resultados")
     
     contenido = cargar_datos(path)
     contenido.update(texto)
