@@ -12,21 +12,19 @@ class Simulacion:
     def simular(self):
         while self.supermercado.estado != "cerrado":
             # print(f"minuto actual simulacion: {self.tiempo_actual}")
-            self.supermercado.actualizar_tiempos(self.tiempo_actual)
-            proximo_evento, proximo_tiempo = self.supermercado.proximo_evento()
-
-            self.supermercado.ocurre_evento(proximo_evento, proximo_tiempo, proximo_tiempo + \
-                                                                            self.tiempo_actual)
-
+            self.supermercado.actualizar_tiempos(self.tiempo_actual, "simulacion")
+            proximo_evento, proximo_tiempo, duracion_evento = self.supermercado.proximo_evento(self.tiempo_actual)
+            self.supermercado.ocurre_evento(proximo_evento, duracion_evento, proximo_tiempo)
             self.supermercado.actualizar_dict_tiempo_anterior(proximo_evento, proximo_tiempo)
-            self.tiempo_actual += proximo_tiempo
+            
+            self.tiempo_actual = proximo_tiempo
 
             if self.tiempo_actual > p.JORNADA * p.MINUTOS_POR_HORA:
                 self.supermercado.estado = "por_cerrar"
 
             if self.tiempo_actual >= p.JORNADA * p.MINUTOS_POR_HORA and \
-                self.supermercado.cantidad_clientes_comprando == 0 and \
-                            self.supermercado.cantidad_clientes_caja == 0:
+                    self.supermercado.cantidad_clientes_comprando == 0 and \
+                    self.supermercado.cantidad_clientes_caja == 0:
                 self.supermercado.estado = "cerrado"
 
         self.tiempo_promedio_espera_cola()
@@ -53,8 +51,6 @@ class Simulacion:
                     self.dict_promedio_ocupacion[tipo_caja][llave] = 0
                 else:
                     self.dict_promedio_ocupacion[tipo_caja][llave] = self.supermercado.dict_ocupacion_caja[tipo_caja][llave]\
-                                                            * 100 / (p.JORNADA * p.MINUTOS_POR_HORA)
+                                                            * 100 / (self.tiempo_actual)
         return self.dict_promedio_ocupacion
-        
 
-        

@@ -1,11 +1,10 @@
 import parametros as p
 
-def tasa_no_homogeneo(minutos):
-    dict_llegada = p.DICCIONARIO_DATOS_LLEGADAS
-    # if minutos == p.JORNADA * p.MINUTOS_POR_HORA:
-    #     jornada = p.JORNADA - 1
-    #     return dict_llegada[f"{jornada}"]
-    hora = int(minutos / p.MINUTOS_POR_HORA)
-    tasa_llegada = dict_llegada[str(hora)]
-    return tasa_llegada
+def tasa_no_homogeneo(tiempo_actual):
+    hora = int(tiempo_actual / 60)
+    minuto = tiempo_actual - hora * 60
+    dict_llegada = p.DICCIONARIO_DATOS_LAMBDA
+    t = hora + int(minuto / 60)
+    tasa = dict_llegada["a"] * t * t + dict_llegada["b"] * t + dict_llegada["c"]
+    return tasa
     
