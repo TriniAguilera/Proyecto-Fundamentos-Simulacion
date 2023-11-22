@@ -94,8 +94,8 @@ class Datos:
         # Visualizar los datos y la curva ajustada
         plt.bar(intervalos, llegadas, label='Datos observados', alpha=0.7)
         plt.plot(x, y_pred, 'r--', label='Curva ajustada')
-        plt.xlabel('Intervalos de Tiempo')
-        plt.ylabel('Llegadas')
+        plt.xlabel('Intervalos de Tiempo [Hora]')
+        plt.ylabel('Llegadas [personas/minuto]')
         plt.legend()
         plt.show()
 

@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import datetime
+fig, ax = plt.subplots(1, 1)
 
 # Definir una semilla
 semilla = 4
@@ -41,6 +42,7 @@ def atencion_normal(max, min, tamano):
     plt.ylabel('Densidad de probabilidad')
     plt.legend()
     plt.show()
+
     return muestra_en_minutos
 
 def atencion_rapida(media, tamano):
@@ -59,7 +61,7 @@ def atencion_rapida(media, tamano):
 
 # Datos de tiempos de demora
 tiempos_demora_compra = compra(max=50, min=20, tamano=100)
-tiempos_atencion_normal = atencion_rapida(media=3, tamano=100)
+tiempos_atencion_normal = atencion_rapida(media=2, tamano=100) # media 3
 tiempos_atencion_rapida = atencion_rapida(media=2, tamano=100)
 
 def crear_hojas(datos_compra, datos_normal, datos_rapida):
