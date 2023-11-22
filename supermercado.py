@@ -188,7 +188,7 @@ class Supermercado:
         return proxima_accion, minimo, duracion
 
     def ocurre_evento(self, evento, tiempo_evento, tiempo_actual):
-        print(f"ANTES - Evento: {evento}, tiempo evento: {tiempo_evento}, tiempo actual: {tiempo_actual}, comprando: {self.cantidad_clientes_comprando}, en fila: {self.cantidad_clientes_caja}, llegadas: {self.cantidad_llegadas}, atenciones: {self.cantidad_atenciones}")
+        # print(f"ANTES - Evento: {evento}, tiempo evento: {tiempo_evento}, tiempo actual: {tiempo_actual}, comprando: {self.cantidad_clientes_comprando}, en fila: {self.cantidad_clientes_caja}, llegadas: {self.cantidad_llegadas}, atenciones: {self.cantidad_atenciones}")
         
         if evento == "llegada":
             self.cantidad_clientes_comprando += 1

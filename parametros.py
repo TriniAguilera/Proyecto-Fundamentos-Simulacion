@@ -39,4 +39,8 @@ LISTA_PATH = ["datos\espera_replicas.json",
               "datos\dict_tiempo_promedio_espera_cola.json",
               "datos\dict_porcentaje_ocupacion_cajas.json",
               "datos\sd_espera.json",
-              "datos\sd_ocupacion.json"]
+              "datos\sd_ocupacion.json",
+              "datos\int_95_espera.json",
+              "datos\int_95_ocupacion.json",
+              "datos\error_95_espera.json",
+              "datos\error_95_ocupacion.json",]

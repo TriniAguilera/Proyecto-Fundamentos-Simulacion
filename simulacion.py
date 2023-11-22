@@ -51,6 +51,6 @@ class Simulacion:
                     self.dict_promedio_ocupacion[tipo_caja][llave] = 0
                 else:
                     self.dict_promedio_ocupacion[tipo_caja][llave] = self.supermercado.dict_ocupacion_caja[tipo_caja][llave]\
-                                                            * 100 / (self.tiempo_actual)
+                                                            * 100 / (p.JORNADA * p.MINUTOS_POR_HORA)
         return self.dict_promedio_ocupacion
 

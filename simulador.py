@@ -3,7 +3,7 @@ from simulacion import Simulacion
 import time
 from guardar_datos import guardar_resultados, crear_archivo, cargar_datos
 import math
-
+from intervalos import Intervalo
 
 class Simulador:
 
@@ -18,6 +18,7 @@ class Simulador:
         self.sd_ocupacion = {}
         self.dict_espera_simulacion = {}
         self.dict_ocupacion_simulacion = {}
+        self.intervalo = None
 
     def simular_replica(self):
 
@@ -33,8 +34,8 @@ class Simulador:
             self.sumar_porcentaje_ocupacion()
             dict_arreglado_espera = self.arreglar_dict(self.simulacion.dict_promedio_tiempo_espera_cola)
             dict_arreglado_ocupacion = self.arreglar_dict(self.simulacion.dict_promedio_ocupacion)
-            self.dict_espera_simulacion[replica] = dict_arreglado_espera
-            self.dict_ocupacion_simulacion[replica] = dict_arreglado_ocupacion
+            self.dict_espera_simulacion[replica] = sum(list(dict_arreglado_espera.values())) / (p.CANTIDAD_CAJAS_NORMALES + p.CANTIDAD_CAJAS_RAPIDAS)
+            self.dict_ocupacion_simulacion[replica] = sum(list(dict_arreglado_ocupacion.values())) / (p.CANTIDAD_CAJAS_NORMALES + p.CANTIDAD_CAJAS_RAPIDAS)
 
             tiempo_fin = time.time()
             duracion_replica = tiempo_fin - tiempo_inicio
@@ -44,6 +45,7 @@ class Simulador:
         self.ocupacion = self.calcular_ocupacion_promedio()
         self.sd_espera = self.calcular_sd_espera()
         self.sd_ocupacion = self.calcular_sd_ocupacion()
+
         guardar_resultados("datos\espera_replicas.json", self.dict_espera_simulacion)
         guardar_resultados("datos\ocupacion_replicas.json", self.dict_ocupacion_simulacion)
         guardar_resultados("datos\dict_tiempo_de_ejecucion.json", self.dict_duracion_replica)
@@ -52,8 +54,17 @@ class Simulador:
         guardar_resultados("datos\sd_espera.json", self.sd_espera)
         guardar_resultados("datos\sd_ocupacion.json", self.sd_ocupacion)
 
-        print(f"PROMEDIO ESPERA COLA: {self.espera} \n")
-        print(f"PROMEDIO OCUPACION: {self.ocupacion} \n")
+        self.intervalo = Intervalo()
+
+        self.int_espera_95 = self.intervalo.calcular_intervalo_espera(95)
+        self.error_95_espera = self.intervalo.error_95_espera
+        self.int_ocupacion_95 = self.intervalo.calcular_intervalo_ocupacion(95)
+        self.error_95_ocupacion = self.intervalo.error_95_ocupacion
+        
+        guardar_resultados("datos\int_95_espera.json", self.int_espera_95)
+        guardar_resultados("datos\int_95_ocupacion.json", self.int_ocupacion_95)
+        guardar_resultados("datos\error_95_espera.json", self.error_95_espera)
+        guardar_resultados("datos\error_95_ocupacion.json", self.error_95_ocupacion)
 
     def arreglar_dict(self, dic):
         dict_ = {}
@@ -61,7 +72,6 @@ class Simulador:
             for nro in dic[tipo_caja].keys():
                 valor = dic[tipo_caja][nro]
                 dict_[nro] = valor
-
         return dict_
         
     def sumar_tiempos_espera_cola(self):
@@ -76,40 +86,42 @@ class Simulador:
 
     def calcular_espera_promedio(self):
         dict_ = {}
+        suma = 0
         for llave in self.dict_espera.keys():
             dict_[llave] = self.dict_espera[llave] / p.REPLICAS
-        return dict_
+            suma += self.dict_espera[llave]
+        total_1 = suma / (p.CANTIDAD_CAJAS_NORMALES + p.CANTIDAD_CAJAS_RAPIDAS)
+        total = total_1 / p.REPLICAS
+        return {"espera promedio": total}
 
     def calcular_sd_espera(self):
-        total = {i: 0 for i in range(p.CANTIDAD_CAJAS_NORMALES + p.CANTIDAD_CAJAS_RAPIDAS)}
-        for caja in self.espera.keys():
-            suma = 0
-            for replica in self.dict_espera_simulacion.keys():
-                dict_espera = self.dict_espera_simulacion[replica]
-                for caja_2 in dict_espera.keys():
-                    if caja == caja_2:
-                        resta = dict_espera[caja_2] - self.espera[caja]
-                        cubo = resta * resta
-                        suma += cubo
-            total[caja] = math.sqrt(suma / (p.REPLICAS - 1))
-        return total
+        suma = 0
+        promedio = self.espera["espera promedio"]
+        for replica in self.dict_espera_simulacion.keys():
+            valor = self.dict_espera_simulacion[replica]
+            resta = valor - promedio
+            cubo = resta * resta
+            suma += cubo
+        total = suma / p.REPLICAS
+        return {"espera sd": total}
     
     def calcular_ocupacion_promedio(self):
         dict_ = {}
+        suma = 0
         for llave in self.dict_ocupacion.keys():
             dict_[llave] = self.dict_ocupacion[llave] / p.REPLICAS
-        return dict_
+            suma += self.dict_ocupacion[llave]
+        total_1 = suma / (p.CANTIDAD_CAJAS_NORMALES + p.CANTIDAD_CAJAS_RAPIDAS)
+        total = total_1 / p.REPLICAS
+        return {"ocupacion promedio": total}
     
     def calcular_sd_ocupacion(self):
-        total = {i: 0 for i in range(p.CANTIDAD_CAJAS_NORMALES + p.CANTIDAD_CAJAS_RAPIDAS)}
-        for caja in self.ocupacion.keys():
-            suma = 0
-            for replica in self.dict_ocupacion_simulacion.keys():
-                dict_ocupacion = self.dict_ocupacion_simulacion[replica]
-                for caja_2 in dict_ocupacion.keys():
-                    if caja == caja_2:
-                        resta = dict_ocupacion[caja_2] - self.ocupacion[caja]
-                        cubo = resta * resta
-                        suma += cubo
-            total[caja] = math.sqrt(suma / (p.REPLICAS - 1))
-        return total
+        suma = 0
+        promedio = self.ocupacion["ocupacion promedio"]
+        for replica in self.dict_ocupacion_simulacion.keys():
+            valor = self.dict_ocupacion_simulacion[replica]
+            resta = valor - promedio
+            cubo = resta * resta
+            suma += cubo
+        total = suma / p.REPLICAS
+        return {"ocupacion sd": total}

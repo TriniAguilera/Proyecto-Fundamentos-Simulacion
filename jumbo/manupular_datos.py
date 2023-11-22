@@ -19,14 +19,14 @@ class Datos:
 
             if nombre_columna_2 == None:
                 lista_datos = df[nombre_columna_1].tolist()
-                print(f"lista {nombre_hoja}:", lista_datos , "\n")
+                # print(f"lista {nombre_hoja}:", lista_datos , "\n")
                 lista_datos_date = [datetime.strptime(tiempo, '%H:%M:%S').time() for tiempo in lista_datos]
                 lista_datos = lista_datos_date
                 lista_segundos = [(t.second) / 60 + t.minute + t.hour * 60 for t in lista_datos]
                 self.diccionario_hojas[nombre_hoja] = lista_segundos
 
             else:
-                print("creando archivo llegadas", nombre_hoja)
+                # print("creando archivo llegadas", nombre_hoja)
                 lista_datos_1 = df[nombre_columna_1].tolist()
                 lista_datos_2 = df[nombre_columna_2].tolist()
                 lista_datos_3 = df[nombre_columna_3].tolist()
@@ -74,7 +74,7 @@ class Datos:
     def curva(self):
         
         datos = self.diccionario_hojas_llegadas_tasas
-        print(datos)
+        # print(datos)
 
         # Convertir el diccionario a listas de intervalos y llegadas
         intervalos = np.array(list(datos.keys()))
@@ -99,7 +99,7 @@ class Datos:
         plt.legend()
         plt.show()
 
-        print("Parámetros de la función ajustada (a * t^2 + b * t + c):", params)
+        # print("Parámetros de la función ajustada (a * t^2 + b * t + c):", params)
         datos_lambda_t = {"a": params[0], "b": params[1], "c": params[2]}
         self.crear_json("jumbo\lambda_t.json", datos_lambda_t)
 
