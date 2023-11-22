@@ -19,6 +19,8 @@ class Simulador:
         self.dict_espera_simulacion = {}
         self.dict_ocupacion_simulacion = {}
         self.intervalo = None
+        self.espera_caja = {}
+        self.ocupacion_caja = {}
 
     def simular_replica(self):
 
@@ -40,6 +42,13 @@ class Simulador:
             tiempo_fin = time.time()
             duracion_replica = tiempo_fin - tiempo_inicio
             self.dict_duracion_replica[replica] = duracion_replica
+
+
+        self.espera_caja = self.calcular_espera_cajas()
+        self.ocupacion_caja = self.calcular_ocupacion_cajas()
+
+        print(f"espera caja: {self.espera_caja}")
+        print(f"ocupacion caja: {self.ocupacion_caja}")
 
         self.espera = self.calcular_espera_promedio()
         self.ocupacion = self.calcular_ocupacion_promedio()
@@ -83,6 +92,18 @@ class Simulador:
         for tipo_caja in self.simulacion.dict_promedio_ocupacion.keys():
             for llave in self.simulacion.dict_promedio_ocupacion[tipo_caja].keys():
                 self.dict_ocupacion[llave] += self.simulacion.dict_promedio_ocupacion[tipo_caja][llave]
+
+    def calcular_espera_cajas(self):
+        dict_ = {}
+        for llave in self.dict_espera.keys():
+            dict_[llave] = self.dict_espera[llave] / p.REPLICAS
+        return dict_
+    
+    def calcular_ocupacion_cajas(self):
+        dict_ = {}
+        for llave in self.dict_ocupacion.keys():
+            dict_[llave] = self.dict_ocupacion[llave] / p.REPLICAS
+        return dict_ 
 
     def calcular_espera_promedio(self):
         dict_ = {}

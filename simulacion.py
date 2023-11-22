@@ -8,6 +8,7 @@ class Simulacion:
         self.supermercado = Supermercado()
         self.dict_promedio_tiempo_espera_cola = {"normal": {}, "rapida": {}}
         self.dict_promedio_ocupacion = {"normal": {}, "rapida": {}}
+        
 
     def simular(self):
         while self.supermercado.estado != "cerrado":

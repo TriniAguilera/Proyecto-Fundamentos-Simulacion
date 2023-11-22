@@ -61,7 +61,7 @@ def atencion_rapida(media, tamano):
 
 # Datos de tiempos de demora
 tiempos_demora_compra = compra(max=50, min=20, tamano=100)
-tiempos_atencion_normal = atencion_rapida(media=2, tamano=100) # media 3
+tiempos_atencion_normal = atencion_rapida(media=3.375, tamano=100) 
 tiempos_atencion_rapida = atencion_rapida(media=2, tamano=100)
 
 def crear_hojas(datos_compra, datos_normal, datos_rapida):
